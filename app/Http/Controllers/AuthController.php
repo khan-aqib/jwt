@@ -12,10 +12,7 @@ class AuthController extends Controller
 {
     //
 
-    public function user(){
-
-    	return "Authenticated user";
-    }
+   
 
     public function register(Request $request)
     {
@@ -38,8 +35,18 @@ class AuthController extends Controller
                 ], Response::HTTP_UNAUTHORIZED);
     	 }
              $user = Auth::user();
+             $token = $user->createToken('token')->plainTextToken;
+             $cookie = cookie('jwt', $token, 60 * 24); // 1 day
 
-             return $user;
+             // return response and send to backend using cookie
+              return response([
+                      'message' => $token
+                       ])->withCookie($cookie);
 
     }//login
+
+     public function user(){
+
+    	return Auth::user();
+    }
 }//mail class
