@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -24,7 +26,20 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(){
-    	
-    }
-}
+    public function login(Request $request){
+
+
+    	if(!Auth::attempt($request->only('email','password')))
+    	 {
+               return response([
+
+                  'message' => 'Invalid credentials!'
+                
+                ], Response::HTTP_UNAUTHORIZED);
+    	 }
+             $user = Auth::user();
+
+             return $user;
+
+    }//login
+}//mail class
