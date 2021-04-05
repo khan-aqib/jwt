@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Auth;
 use Symfony\Component\HttpFoundation\Response;
+use Cookie;
 
 class AuthController extends Controller
 {
@@ -49,4 +50,16 @@ class AuthController extends Controller
 
     	return Auth::user();
     }
+
+
+     public function logout()
+     {
+        $cookie = Cookie::forget('jwt');
+
+        return response([
+            'message' => 'Success'
+        ])->withCookie($cookie);
+     }
+
+
 }//mail class
